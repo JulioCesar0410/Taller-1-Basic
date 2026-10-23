@@ -1,0 +1,67 @@
+*{
+    margin: 0;
+    padding: 0;
+font-family:'segoe ui',Tahoma,Verdana, Geneva, Tahoma, sans-serif ;
+}
+body{
+    background-color: rgb(4, 154, 180);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    
+}
+
+h2{
+    color:aliceblue;
+    text-align: center;
+    font-size: 25px;
+    border-bottom: 2px solid rgb(0, 225, 255);
+    padding: 25px;
+}
+
+.gupo-input{
+    display: flex;
+    padding: 10px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    color: rgb(236, 234, 234);
+    font-size: 20px;
+    padding: 15px;
+
+}
+
+.gupo-button{
+    display: flex;
+    align-items: center;
+    gap:50px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.btn-primary{
+    color: rgb(243, 239, 239);
+    border : 1px solid rgb(0, 0, 0);  
+    border-radius: 5px;
+    font-size: 25px;
+    padding: 10px;
+    background-color: rgba(9, 255, 0, 0.534);
+    cursor: pointer;
+}
+.btn-secondary{
+    color: rgb(255, 253, 253);
+    border : 1px solid rgb(0, 0, 0);  
+    border-radius: 5px;
+    font-size: 25px;
+    padding: 10px;
+    background-color: rgba(255, 30, 0, 0.822);
+    cursor: pointer;
+}
+
+input, select{
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid rgb(0, 0, 0);
+    font-size: 15px;
+}

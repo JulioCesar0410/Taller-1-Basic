@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto without rus </title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <div>
+        <h2>
+                Registro De Formulario
+            </h2>
+        <form id="registro " action="" method="post" >
+
+            <div class="gupo-input">
+                <label for="">Ingresar Documeto</label>
+                <input id="documento" type="number" placeholder="ej:1002479296">
+            </div>
+
+            <div class="gupo-input">
+                <label for="">Nombre</label>
+                <input id="Nombre" type="text" placeholder="Cesar">
+            </div>
+
+            <div class="gupo-input">
+                <label for="">Apellido</label>
+                <input id="Apellido" type="text" placeholder="Manrique">
+            </div>
+
+              <div class="gupo-input">
+                <label for="">Email</label>
+                <input id="email" type="email" placeholder="Juliomanrique@gmail.com">
+            </div>
+
+              <div class="gupo-input">
+                <label for="">Fecha De Nacimiento</label>
+                <input id="fecha_N" type="date" >
+            </div>
+            
+             <div class="gupo-input">
+                <label for="">Ciudad</label>
+                <select name="Ciudad" id="Ciudad">
+                <option value="Duitama">Duitama</option>
+                <option value="Sogamoso">Sogamoso</option>
+                <option value="Bogota">Bogota</option>
+                </select>
+            </div>
+               <div class="gupo-input"><label for="">Genero: </label></div> 
+             <div class="gupo-input">
+                <input id="Hombre" type="radio" name="Genero" value="Hombre">
+                <label for="">Hombre</label>
+                <input id="Mujer" type="radio" name="Genero" value="Mujer">
+                <label for="">Mujer</label>
+                <input id="Otro" type="radio" name="Genero" value="Otro">
+                <label for="">Otro</label>
+                
+            </div>
+            <br>
+
+            <div class="gupo-button">
+            <button type="submit" class="btn btn-primary">Enviar Formulario</button>
+            <button type="reset" class="btn btn-secondary">Limpiar Formulario</button>
+
+            </div>
+        
+        </form>
+    </div>
+    
+</body>
+</html>
