@@ -11,26 +11,26 @@
         <h2>
                 Registro De Formulario
             </h2>
-        <form id="registro " action="" method="post" >
+        <form id="registro "  action="../modelos/guardarAsociado.php" method="post" >
 
             <div class="gupo-input">
                 <label for="">Ingresar Documeto</label>
-                <input id="documento" type="number" placeholder="ej:1002479296">
+                <input id="documento" name="documento" type="number" placeholder="ej:1002479296">
             </div>
 
             <div class="gupo-input">
                 <label for="">Nombre</label>
-                <input id="Nombre" type="text" placeholder="Cesar">
+                <input id="Nombre" name="Nombre" type="text" placeholder="Cesar">
             </div>
 
             <div class="gupo-input">
                 <label for="">Apellido</label>
-                <input id="Apellido" type="text" placeholder="Manrique">
+                <input id="Apellido" name="Apellido" type="text" placeholder="Manrique">
             </div>
 
               <div class="gupo-input">
                 <label for="">Email</label>
-                <input id="email" type="email" placeholder="Juliomanrique@gmail.com">
+                <input id="email" name="email" type="email" placeholder="Juliomanrique@gmail.com">
             </div>
 
               <div class="gupo-input">
@@ -63,6 +63,7 @@
             <button type="reset" class="btn btn-secondary">Limpiar Formulario</button>
 
             </div>
+            <p id = "mensajeRegistro" role = "status" aria-live="polite"></p>
         
         </form>
     </div>
