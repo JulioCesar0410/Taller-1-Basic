@@ -11,6 +11,7 @@ private $fechaNacimiento;
 private $ciudad;
 private $genero;
 private $conexion;
+private $contrasena;
 
 public function __construct($datos){
     $this->documento = $datos['documento'];
@@ -22,13 +23,15 @@ public function __construct($datos){
     $this->fechaNacimiento = $datos['fechaNacimiento'];
     $this->ciudad = $datos['ciudad'];
     $this->genero = $datos['genero'];
+    $this->contrasena = password_hash($datos['contrasena'], PASSWORD_DEFAULT);
+
 
     $conexion =new Conexion();
     $this ->conexion = $conexion->conectar();
 
 }
 public function guardar(){
-    $sql = "INSERT INTO asociados (documento, nombres, apellidos, telefono, email, direccionResidencia, fechaNacimiento, ciudad, genero) VALUES (:documento, :nombre, :apellido, :telefono, :email, :direccion, :fechaNacimiento, :ciudad, :genero)";
+    $sql = "INSERT INTO asociados (documento, nombres, apellidos, telefono, email, direccionResidencia, fechaNacimiento, ciudad, genero, contrasena) VALUES (:documento, :nombre, :apellido, :telefono, :email, :direccion, :fechaNacimiento, :ciudad, :genero, :contrasena)";
     $consulta = $this->conexion->prepare($sql);
     return $consulta->execute([
         ':documento' => $this->documento,
@@ -40,6 +43,7 @@ public function guardar(){
         ':fechaNacimiento' => $this->fechaNacimiento,
         ':ciudad' => $this->ciudad,
         ':genero' => $this->genero
+        ':contrasena' => $this->contrasena
     ]);
 }
 }

@@ -23,7 +23,7 @@ try{
         http_response_code(400);
         throw new Exception("Datos inválidos");
     }
-    $campos=["documento","nombre","apellido","telefono","email","direccion","fechaNacimiento","ciudad","genero"];
+    $campos=["documento","nombre","apellido","telefono","email","direccion","fechaNacimiento","ciudad","genero","contrasena","confirmar_contrasena"];
     foreach ($campos as $campo) {
         if (!isset($datos[$campo]) || $datos[$campo] === '') {
             http_response_code(400);

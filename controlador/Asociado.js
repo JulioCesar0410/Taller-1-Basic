@@ -8,7 +8,12 @@ formulario.addEventListener("submit", async function (event) {
     const Asociado = Object.fromEntries(new FormData(formulario).entries());
 
     botonGuardar.disabled = true;
-    
+
+    if (Asociado.contrasena !== Asociado.confirmar_contrasena) {
+        document.getElementById("mensajeRegistro").textContent = "Las contraseñas no coinciden.";
+    }
+    delete Asociado.confirmar_contrasena;
+
     try{
         const respuesta = await fetch(formulario.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Asociado)});
         const resultado = await respuesta.json();
@@ -28,4 +33,5 @@ formulario.addEventListener("submit", async function (event) {
     }finally{
         botonGuardar.disabled = false; //Habilitar el botón después de que se complete la solicitud
     }
+
 });     
