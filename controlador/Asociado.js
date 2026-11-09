@@ -1,4 +1,4 @@
-const formulario = document.getElementById("Registro");
+const formulario = document.getElementById("registro");
 
 formulario.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -17,7 +17,7 @@ formulario.addEventListener("submit", async function (event) {
         document.getElementById("mensajeRegistro").dataset.tipo = "";
         document.getElementById("mensajeRegistro").textContent = resultado.mensaje;
 
-        if(respuesta.ok && resultado.sucess){
+        if(respuesta.ok && resultado.success){
             formulario.reset(); 
         }
 

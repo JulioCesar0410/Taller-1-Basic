@@ -11,62 +11,73 @@
         <h2>
                 Registro De Formulario
             </h2>
-        <form id="registro "  action="../modelos/guardarAsociado.php" method="post" >
+        <form id="registro" action="../modelo/guardarAsociado.php" method="post">
 
             <div class="gupo-input">
                 <label for="">Ingresar Documeto</label>
-                <input id="documento" name="documento" type="number" placeholder="ej:1002479296">
+                <input id="documento" name="documento" type="number" placeholder="ej:1002479296" required>
             </div>
 
             <div class="gupo-input">
-                <label for="">Nombre</label>
-                <input id="Nombre" name="Nombre" type="text" placeholder="Cesar">
+                <label for="">nombre</label>
+                <input id="nombre" name="nombre" type="text" placeholder="Cesar" required>
             </div>
 
             <div class="gupo-input">
-                <label for="">Apellido</label>
-                <input id="Apellido" name="Apellido" type="text" placeholder="Manrique">
+                <label for="apellido">Apellido</label>
+                  <input id="apellido" name="apellido" type="text" placeholder="Manrique" required>
             </div>
 
               <div class="gupo-input">
-                <label for="">Email</label>
-                <input id="email" name="email" type="email" placeholder="Juliomanrique@gmail.com">
+                  <label for="telefono">Teléfono</label>
+                  <input id="telefono" name="telefono" type="tel" required>
             </div>
 
               <div class="gupo-input">
-                <label for="">Fecha De Nacimiento</label>
-                <input id="fecha_N" type="date" >
+                  <label for="">email</label>
+                  <input id="email" name="email" type="email" placeholder="Juliomanrique@gmail.com" required>
             </div>
+
+                <div class="gupo-input">
+                  <label for="fechaNacimiento">Fecha De Nacimiento</label>
+                  <input id="fechaNacimiento" name="fechaNacimiento" type="date" required>
+              </div>
+
+              <div class="gupo-input">
+                  <label for="direccion">Dirección</label>
+                  <input id="direccion" name="direccion" type="text" required>
+              </div>
             
-             <div class="gupo-input">
-                <label for="">Ciudad</label>
-                <select name="Ciudad" id="Ciudad">
+               <div class="gupo-input">
+                  <label for="">ciudad</label>
+                  <select name="ciudad" id="ciudad" required>
                 <option value="Duitama">Duitama</option>
                 <option value="Sogamoso">Sogamoso</option>
                 <option value="Bogota">Bogota</option>
                 </select>
             </div>
-               <div class="gupo-input"><label for="">Genero: </label></div> 
+               <div class="gupo-input"><label for="">genero: </label></div> 
              <div class="gupo-input">
-                <input id="Hombre" type="radio" name="Genero" value="Hombre">
-                <label for="">Hombre</label>
-                <input id="Mujer" type="radio" name="Genero" value="Mujer">
-                <label for="">Mujer</label>
-                <input id="Otro" type="radio" name="Genero" value="Otro">
-                <label for="">Otro</label>
+                <input id="Masculino" type="radio" name="genero" value="Masculino" required>
+                <label for="Masculino">Masculino</label>
+                <input id="Femenino" type="radio" name="genero" value="Femenino">
+                <label for="Femenino">Femenino</label>
+                <input id="Otro" type="radio" name="genero" value="Otro">
+                <label for="Otro">Otro</label>
                 
             </div>
-            <br>
-
             <div class="gupo-button">
             <button type="submit" class="btn btn-primary">Enviar Formulario</button>
             <button type="reset" class="btn btn-secondary">Limpiar Formulario</button>
 
             </div>
             <p id = "mensajeRegistro" role = "status" aria-live="polite"></p>
+
         
         </form>
+
+
     </div>
-    
+    <script src="../controlador/Asociado.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-require_once__DIR__.'/../config/conexion.php';
+require_once __DIR__.'/../config/conexion.php';
 class Asociado{
 private $documento;
 private $nombre;
@@ -12,7 +12,7 @@ private $ciudad;
 private $genero;
 private $conexion;
 
-public function_construct($datos){
+public function __construct($datos){
     $this->documento = $datos['documento'];
     $this->nombre = $datos['nombre'];
     $this->apellido = $datos['apellido'];
@@ -28,7 +28,7 @@ public function_construct($datos){
 
 }
 public function guardar(){
-    $sql = "INSERT INTO asociados (documento, nombre, apellido, telefono, email, direccion, fechaNacimiento, ciudad, genero) VALUES (:documento, :nombre, :apellido, :telefono, :email, :direccion, :fechaNacimiento, :ciudad, :genero)";
+    $sql = "INSERT INTO asociados (documento, nombres, apellidos, telefono, email, direccionResidencia, fechaNacimiento, ciudad, genero) VALUES (:documento, :nombre, :apellido, :telefono, :email, :direccion, :fechaNacimiento, :ciudad, :genero)";
     $consulta = $this->conexion->prepare($sql);
     return $consulta->execute([
         ':documento' => $this->documento,

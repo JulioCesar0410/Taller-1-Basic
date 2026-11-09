@@ -4,21 +4,28 @@ require_once __DIR__.'/../modelo/Asociado.php';
 
 try{
 
-    if($_SERVER('REQUEST_METHOD')!=='POST'){
+    if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
         http_response_code(405);
-        
-        throwxception("Método no permitido", 405);
+        throw new Exception("Método no permitido");
     }
-    $json = file_get_contents('php://input');
-    $datos = json_decode($json, true);
+    $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+    if (stripos($contentType, 'application/json') !== false) {
+        $datos = json_decode(file_get_contents('php://input'), true);
+        if (!is_array($datos) || json_last_error() !== JSON_ERROR_NONE) {
+            http_response_code(400);
+            throw new Exception("Datos JSON inválidos");
+        }
+    } else {
+        $datos = $_POST;
+    }
 
-    if(!is_array($datos)|| json_last_error() !== JSON_ERROR_NONE){
+    if (!is_array($datos) || $datos === []) {
         http_response_code(400);
         throw new Exception("Datos inválidos");
     }
     $campos=["documento","nombre","apellido","telefono","email","direccion","fechaNacimiento","ciudad","genero"];
-    foreach($campos as $campos){
-        if(!isset($datos[$campo])){
+    foreach ($campos as $campo) {
+        if (!isset($datos[$campo]) || $datos[$campo] === '') {
             http_response_code(400);
             throw new Exception("Campo faltante:" . $campo);
         }
@@ -28,11 +35,15 @@ try{
         http_response_code(400);
         throw new Exception("Email inválido");
     }
+    if (!in_array($datos['genero'], ['Masculino', 'Femenino', 'Otro'], true)) {
+        http_response_code(400);
+        throw new Exception("Género inválido");
+    }
     $asociado = new Asociado($datos);
     $resultado = $asociado->guardar();
-    if(resultado){
+    if ($resultado) {
         http_response_code(201);
-        echo json_encode(["mensaje"=>"Asociado guardado exitosamente"]);
+        echo json_encode(["success" => true, "mensaje" => "Asociado guardado exitosamente"]);
     }else{
         http_response_code(500);
         throw new Exception("Error al guardar el asociado");
