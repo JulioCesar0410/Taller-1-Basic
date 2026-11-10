@@ -1,23 +1,44 @@
-const usuarios = [
-    {usuario: 'admin@gmail.com', clave:'123', rol:'admin', nombre:'cesar'},
-    {usuario: 'juan@gmail.com', clave:'123', rol:'usuario', nombre:'juan'}
-];
-
-    document.getElementById("login").addEventListener('submit', function (e) {
+const formulario = getElementById("Login");
+formulario.addEventListener("submit", function (e){
     e.preventDefault();
-    const usuarioInput = document.getElementById('loginEmail').value;
-    const contrasenainput = document.getElementById('loginPassword').value;
 
-    const usuarioencotrado = usuarios.find(
-        u => u.usuario === usuarioInput && u.clave === contrasenainput);
+    const boton = formulario.querySelector("button[type='submit']");
+    const mensaje = formulario.getElementById("mensajelogin");
+
+
+    boton.disabled = true;
     
+    try{
+        const respuesta = await fetch(formulario.action, {
+            method: formulario.method,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            //stringify convierte un objeto en una cadena de texto
+            //Object.fromEntries convierte un objeto en un array de pares clave-valor
+            //entries() devuelve un array de pares clave-valor de un objeto
+            body: JSON.stringify(Object.fromEntries(new FormData(formulario).entries())),
+        });
 
-    if(usuarioencotrado){
-    localStorage.setItem('logueado', 'true');
-    localStorage.setItem('rol', usuarioencotrado.rol);
-    localStorage.setItem('nombre',usuarioencotrado.nombre);
-    window.location.href='Dashboard.html';
-    }else{
-     alert('usuario o contraseña incorrecta')
+
+        const resultado = await respuesta.json();
+
+        if (!resultado.success) {
+            mensaje.textContent = resultado.message;
+            boton.disabled = false;
+            return;
+        }
+
+        localStorage.setItem('logueado', 'true');
+        localStorage.setItem('rol', usuarioEncontrado.rol);
+        localStorage.setItem('nombre', usuarioEncontrado.nombre);
+        window.location.href = 'Dashboard.html';
+    }catch {
+    console.error('Error al enviar el formulario'); 
+    mensaje.textContent = 'Error al enviar el formulario';
+    }finally {
+        boton.disabled = false;
     }
+
+
 });
