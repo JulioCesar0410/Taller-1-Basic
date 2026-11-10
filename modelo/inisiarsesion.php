@@ -1,76 +1,100 @@
 <?php
+ob_start();
 
 session_start();
 
 header('Content-Type: application/json');
+
+function responderJson(array $respuesta, int $estado): void
+{
+    http_response_code($estado);
+    if (ob_get_level() > 0) {
+        ob_clean();
+    }
+    echo json_encode($respuesta, JSON_INVALID_UTF8_SUBSTITUTE);
+}
+
 // Manejo de errores y excepciones
 try {
  if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
         http_response_code(405);
         throw new Exception("Método no permitido");
     }
-// Lee los datos JSON enviados en la solicitud  
-    $datos = json_decode(file_get_contents('php://input'), true);
-    if (!is_array($datos) || json_last_error() !== JSON_ERROR_NONE) {
-        http_response_code(400);
-        throw new Exception("Datos JSON inválidos");
+    $cuerpo = file_get_contents('php://input');
+    $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+
+    if (stripos($contentType, 'application/json') !== false || str_starts_with(ltrim($cuerpo), '{')) {
+        $datos = json_decode($cuerpo, true);
+        if (!is_array($datos) || json_last_error() !== JSON_ERROR_NONE) {
+            http_response_code(400);
+            throw new Exception("Datos JSON inválidos");
+        }
+    } else {
+        $datos = $_POST;
+        if ($datos === [] && $cuerpo !== '') {
+            parse_str($cuerpo, $datos);
+        }
     }
-    // Validación de los datos recibidos
-    $email = $datos['email'] ?? '';
-    $contraseña = $datos['contraseña'] ?? '';
-    if(!is_string($email) || !is_string($contraseña) || empty($email) || empty($contraseña)){
+
+    $email = $datos['email'] ?? $datos['loginEmail'] ?? $datos['correo'] ?? $datos['usuario'] ?? '';
+    $contraseña = $datos['contrasena']
+        ?? $datos['contraseña']
+        ?? $datos['loginPassword']
+        ?? $datos['login_password']
+        ?? $datos['password']
+        ?? $datos['clave']
+        ?? '';
+    if (!is_string($email) || trim($email) === '') {
         http_response_code(400);
-        throw new Exception("Email o contraseña inválidos");
+        throw new Exception("Falta el correo electrónico");
     }
-    // Conexión a la base de datos y verificación de credenciales
+    if (!is_string($contraseña) || $contraseña === '') {
+        http_response_code(400);
+        throw new Exception("Falta la contraseña");
+    }
+
     require_once __DIR__.'/../config/conexion.php';
-
-// Crea una instancia de la clase Conexion y llama al método iniciarSesion
     $conexion = (new Conexion())->conectar();
-    // Llama al método iniciarSesion para obtener los datos del asociado
-    $asociado = $conexion->iniciarSesion($email, $contraseña);
-// Prepara y ejecuta la consulta para obtener los datos del asociado
-    $consulta = $conexion->prepare("SELECT * FROM asociados WHERE email = :email");
-// Ejecuta la consulta con el parámetro del email
-    $consulta ->execute([':email' => $email]);
-// Obtiene el resultado de la consulta y lo almacena en la variable $asociado
+    $consulta = $conexion->prepare("SELECT documento, nombres, apellidos, rol, `contraseña` FROM asociados WHERE email = :email");
+    $consulta->execute([':email' => $email]);
     $asociado = $consulta->fetch();
-// verifica si el usuario existe y si la contraseña es correcta
-    if(!password_verify($contraseña, $asociado['contraseña'])){
-        http_response_code(401);
-        throw new Exception("Email o contraseña incorrectos");
-    }
-// verifica si el usuario existe y si la contraseña es correcta
-    if(!$asociado || !password_verify($contraseña, $asociado['contraseña']|| empty($asociado['contraseña']))){
-        http_response_code(401);
-        throw new Exception("Email o contraseña incorrectos");
-    }
-// strtolower() convierte la cadena a minúsculas 
 
-    $_SESSION['rol'] = strtolower ($asociado['rol']);
+    $claveGuardada = is_array($asociado) ? ($asociado['contraseña'] ?? '') : '';
+    $algoritmo = password_get_info($claveGuardada)['algoName'];
+    $claveValida = $algoritmo !== 'unknown'
+        ? password_verify($contraseña, $claveGuardada)
+        : ($claveGuardada !== '' && hash_equals($claveGuardada, $contraseña));
+
+    if (!$asociado || !$claveValida) {
+        http_response_code(401);
+        throw new Exception("Email o contraseña incorrectos");
+    }
+
+    if ($algoritmo === 'unknown') {
+        $actualizarClave = $conexion->prepare("UPDATE asociados SET `contraseña` = :contrasena WHERE documento = :documento");
+        $actualizarClave->execute([
+            ':contrasena' => password_hash($contraseña, PASSWORD_DEFAULT),
+            ':documento' => $asociado['documento'],
+        ]);
+    }
+
+    $_SESSION['rol'] = strtolower($asociado['rol']);
     $_SESSION['documento'] = $asociado['documento'];
-// Devuelve una respuesta JSON con el rol del usuario
-    echo json_encode([
-    "success" => true,
-    "rol" => $_SESSION['rol'],
-    "nombre" => $asociado['nombres'] . " " . $asociado['apellidos'],  
-    ]);
-}   
-// Manejo de excepciones y errores
-//PDO es que nos muestre el error o todos los errores que vienne desde la BD 
-catch(PDOException $e){
-    $errorMessage = "Error: " . $e->getMessage();
-    echo json_encode([
-        "success" => false, 
-        "message" => $errorMessage
-    ]);
-}   
-catch(Exception $e){
-    $errorMessage = "Error: " . $e->getMessage();
-    echo json_encode([
-        "success" => false, 
-        "message" => $errorMessage
-    ]);
+
+    responderJson([
+        "success" => true,
+        "rol" => $_SESSION['rol'],
+        "nombre" => $asociado['nombres'] . " " . $asociado['apellidos'],
+    ], 200);
+} catch (PDOException $e) {
+    error_log($e->getMessage());
+    responderJson([
+        "success" => false,
+        "message" => "Error interno al iniciar sesión."
+    ], 500);
+} catch (Exception $e) {
+    responderJson([
+        "success" => false,
+        "message" => "Error: " . $e->getMessage()
+    ], http_response_code());
 }
-
-
