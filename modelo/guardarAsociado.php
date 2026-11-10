@@ -23,7 +23,7 @@ try{
         http_response_code(400);
         throw new Exception("Datos inválidos");
     }
-    $campos=["documento","nombre","apellido","telefono","email","direccion","fechaNacimiento","ciudad","genero","contrasena","confirmar_contrasena"];
+    $campos=["documento","nombre","apellido","telefono","email","direccion","fechaNacimiento","ciudad","genero","contraseña"];
     foreach ($campos as $campo) {
         if (!isset($datos[$campo]) || $datos[$campo] === '') {
             http_response_code(400);
@@ -34,6 +34,10 @@ try{
     if(!filter_var($datos['email'], FILTER_VALIDATE_EMAIL)){
         http_response_code(400);
         throw new Exception("Email inválido");
+    }
+    if (isset($datos['confirmar_contraseña']) && $datos['contraseña'] !== $datos['confirmar_contraseña']) {
+        http_response_code(400);
+        throw new Exception("Las contraseñas no coinciden");
     }
     if (!in_array($datos['genero'], ['Masculino', 'Femenino', 'Otro'], true)) {
         http_response_code(400);

@@ -7,18 +7,17 @@ formulario.addEventListener("submit", async function (event) {
 
     const Asociado = Object.fromEntries(new FormData(formulario).entries());
 
-    botonGuardar.disabled = true;
-
     if (Asociado.contrasena !== Asociado.confirmar_contrasena) {
         document.getElementById("mensajeRegistro").textContent = "Las contraseñas no coinciden.";
+        return;
     }
-    delete Asociado.confirmar_contrasena;
 
+    botonGuardar.disabled = true;
+    document.getElementById("mensajeRegistro").textContent = "Guardando...";
     try{
         const respuesta = await fetch(formulario.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Asociado)});
         const resultado = await respuesta.json();
 
-        document.getElementById("mensajeRegistro").textContent = "Guardando...";
         document.getElementById("mensajeRegistro").dataset.tipo = "";
         document.getElementById("mensajeRegistro").textContent = resultado.mensaje;
 
