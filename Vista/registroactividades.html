@@ -98,6 +98,41 @@
 </head>
 
 <body>
+    <h2 class="titulo-tabla">Tabla de actividades</h2>
+
+    <div class="card shadow-sm contenedor-tabla">
+        <div class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Actividad</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Municipio</th>
+                            <th scope="col">Total recaudo</th>
+                            <th id="encabezadoAcciones" class="d-none" scope="col">
+                                Acciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaActividades">
+                        <tr>
+                            <td colspan="5" class="text-center py-4">
+                                Cargando actividades...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <a href="Actividades.html" >
+            <button type="button" class="btn btn-sm boton-rosa m-3">
+                Nueva actividad
+            </button>
+        </a>
+</body>
+
+</html>
     <main class="container py-5">
        
         <!-- 1. Registro de Actividades -->
@@ -151,6 +186,8 @@
                 </div>
             </form>
         </section>
+        <script src="../controlador/Actividades.js"></script>
 </body>
+
 
 </html>
