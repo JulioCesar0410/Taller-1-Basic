@@ -32,7 +32,8 @@ class Actividad {
         $consulta->execute([':idActividad' => $idActividad]);
         return $consulta->rowCount() > 0; //retorna true si se elimino una fila 
     }
-    public function editar($datos){
+    public function editar($datos)
+    {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
         $sql = "UPDATE actividades SET nombreActividad" = :nombreActividad, fechaEvento = :fechaEvento, municipio = :municipio, totalRecaudado = :totalRecaudado WHERE idActividad = idActividad";
         $consulta = $this->conexion->prepare($sql);
         return $consulta->execute([
@@ -41,7 +42,8 @@ class Actividad {
         ":municipiop" => $datos['municipio']
         ":totalRecaudado" => $datos ['totalRecaudado'],
         ":idActividad" => $datos ['idActividad']
-    ]);
+       ]);
+    }
 
     if ($consulta->rowCount() > 0){
     return true;
@@ -51,4 +53,4 @@ class Actividad {
         $verificar->execute([':idActividad' => $datos['idActividad']]);
 
         return(bool)$verificar->fetchColumn(); // Retorna treu si el registro existe, false si no
-}
+}  
